@@ -104,6 +104,7 @@ void Buses::install()
       cout<<"OOPs!!!!! bus already exists please retry......."<<endl;
       return;
   }
+
   strcpy(Bus.busn ,number);
   PutBusNumberInIndexFile(Bus.busn);
 
@@ -135,7 +136,7 @@ void Buses::allotment()
   cin>>number;
 
   cout<<"\nSeat Number: ";
-     cin>>seat;
+  cin>>seat;
 
      if(!loadBusDataFromFile())
      {
@@ -143,15 +144,21 @@ void Buses::allotment()
          return;
      }
      if(seat>32)
-       {
+     {
          cout<<"\nThere are only 32 seats available in this bus.";
-       }
+     }
        else
          {
              int row = seat/4;
              int col = (seat%4)-1;
-             cout<<"row = "<<row<<"col is "<<col<<endl;
-             if (strcmp(Bus.seat[row][col], "Empty")==0)
+
+             if(seat%4 == 0)
+             {
+               row = seat/4 - 1;
+               col = 3;
+             }
+            //  cout<<"row = "<<row<<"col is "<<col<<endl;
+             if (strcmp(Bus.seat[row][col], "Empty") == 0)
                {
                  cout<<"Enter passanger's name: ";
                  cin>>Bus.seat[row][col];
@@ -165,14 +172,16 @@ void Buses::allotment()
 
 static void AllocateTheSeat(int row,int col)
 {
-    cout<<"allocating seat...."<<endl;
+    // cout<<"allocating seat.... at row = "<<row<<" col = "<<col<<endl;
     int index = get_index_of_Bus_with_bus_number(number);
+    // cout<<"bus with index "<<index<<endl;
+
     if(index == -1)
     {
         cout<<"no such bus"<<endl;
         return;
-
     }
+
     fstream file;
     file.open("seats.rec",ios::in|ios::out);
     string line;
@@ -195,22 +204,23 @@ static void AllocateTheSeat(int row,int col)
         cout<<q<<endl;
         linenumber++;
     }
-    linenumber = 0;
-    while(getline(file,line) && linenumber < row-1)
-        linenumber++;
 
-    cout<<linenumber<<" is line number after index-asterisk line"<<endl;
+    linenumber = 0;
+    while(linenumber < row-1 && getline(file,line) )
+    {
+      linenumber++;
+    }
+
     line = "";
     for(int i = 0;i < 4;i++)
     {
         line = line + Bus.seat[row][i]+"|";
     }
-    line = line+"\n";
-    file<<line;
-    cout<<line<<endl;
-    // Bus[row];
-}
 
+    line = line+"\n";
+    
+    file<<line;
+}
 
 void Buses::empty()
 {
@@ -432,7 +442,7 @@ void Buses::avail()
         loadBusDataFromFile();
 
         vline('*');
-        cout<<"Bus no: \t"<<Bus.busn<<"\nDriver: \t"<<Bus.driver
+        cout<<"\nBus no: \t"<<Bus.busn<<"\nDriver: \t"<<Bus.driver
         <<"\t\tArrival time: \t"<<Bus.arrival<<"\tDeparture Time: \t"
         <<Bus.depart<<"\nFrom: \t\t"<<Bus.from<<"\t\tTo: \t\t\t"
         <<Bus.to<<"\n";
@@ -464,10 +474,10 @@ static void initialiseP()
 
 
     getline(file,line);
-    cout<<"last line is "<<line<<endl;
+    // cout<<"last line is "<<line<<endl;
     string no = line.substr(line.find("|") + 1);
 
-    cout<<"latest index is "<<no<<endl;
+    // cout<<"latest index is "<<no<<endl;
     p = std::stoi(no);
     p++;
     file.close();
@@ -502,7 +512,7 @@ int main()
 {
     system("clear");
     initialiseP();
-    cout<<"p is "<<p<<endl;
+    // cout<<"p is "<<p<<endl;
 
     int w;
     while(1)
