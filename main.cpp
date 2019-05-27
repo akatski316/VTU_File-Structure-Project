@@ -206,7 +206,7 @@ static void AllocateTheSeat(int row,int col)
     }
 
     linenumber = 0;
-    while(linenumber < row-1 && getline(file,line) )
+    while(linenumber < row && getline(file,line) )
     {
       linenumber++;
     }
@@ -421,6 +421,7 @@ void Buses::position(int l)
 
   cout<<"\n\nThere are "<<p<<" seats empty in Bus No: "<<bus[l].busn;
   }
+
 
 //..shows all available busses
 void Buses::avail()
