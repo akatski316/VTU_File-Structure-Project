@@ -94,6 +94,7 @@ void Buses::addThisBusToFile()
     file.close();
 }
 
+//..installs a bus in business
 void Buses::install()
 {
   cout<<"Enter bus no: ";
@@ -101,8 +102,8 @@ void Buses::install()
 
   if(!checkTheBusNumber())
   {
-      cout<<"OOPs!!!!! bus already exists please retry......."<<endl;
-      return;
+    cout<<"OOPs!!!!! bus already exists please retry......."<<endl;
+    return;
   }
 
   strcpy(Bus.busn ,number);
@@ -385,6 +386,16 @@ static bool loadBusDataFromFile()
         }
     }
     files.close();
+
+    // cout<<"bus loaded from file"<<endl;
+    // for(int i = 0;i < 8;i++)
+    // {
+    //   for (int j = 0; j < 4; j++)
+    //   {
+    //     cout<<Bus.seat[i][j]<<" ";
+    //   }
+    //   cout<<endl;
+    // }
     return 1;
 }
 
@@ -540,5 +551,6 @@ int main()
         case 5:  exit(0);
       }
     }
+    
     return 0;
 }
